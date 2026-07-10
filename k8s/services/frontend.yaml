@@ -24,7 +24,7 @@ spec:
           type: RuntimeDefault
       containers:
         - name: frontend
-          image: ghcr.io/YOUR_GITHUB_USERNAME/bakery-microservices/frontend:latest
+          image: ghcr.io/singhgauravlinux-coder/bakery-swagger/frontend:d1a950b
           imagePullPolicy: Always
           ports:
             - containerPort: 8080
