@@ -1,0 +1,33 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+resources:
+  - namespace.yaml
+  - policies.yaml
+  - data/postgres.yaml
+  - data/redis.yaml
+  - data/adminer.yaml
+  - services/api-gateway.yaml
+  - services/frontend.yaml
+  - services/auth-service.yaml
+  - services/product-catalog-service.yaml
+  - services/cart-service.yaml
+  - services/order-service.yaml
+  - services/payment-service.yaml
+  - services/inventory-service.yaml
+  - services/delivery-service.yaml
+  - services/notification-service.yaml
+  - services/pricing-service.yaml
+  - services/promotion-service.yaml
+  - services/recommendation-service.yaml
+  - services/review-service.yaml
+  - services/search-service.yaml
+  - services/supplier-service.yaml
+  - services/user-service.yaml
+  - services/analytics-service.yaml
+  - services/recipe-service.yaml
+  - services/loyalty-service.yaml
+  - services/invoice-service.yaml
+  - services/media-service.yaml
+  - services/baking-schedule-service.yaml
+  - ingress.yaml
