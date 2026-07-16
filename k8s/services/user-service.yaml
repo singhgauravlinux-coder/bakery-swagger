@@ -24,7 +24,7 @@ spec:
           type: RuntimeDefault
       containers:
         - name: user-service
-          image: ghcr.io/singhgauravlinux-coder/bakery-swagger/user-service:d1a950b
+          image: ghcr.io/singhgauravlinux-coder/bakery-swagger/user-service:d1c1a11
           imagePullPolicy: Always
           ports:
             - containerPort: 3000
