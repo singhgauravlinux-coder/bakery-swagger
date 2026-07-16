@@ -24,7 +24,7 @@ spec:
           type: RuntimeDefault
       containers:
         - name: order-service
-          image: ghcr.io/singhgauravlinux-coder/bakery-swagger/order-service:efebd5b
+          image: ghcr.io/singhgauravlinux-coder/bakery-swagger/order-service:7430998
           imagePullPolicy: Always
           ports:
             - containerPort: 3000
