@@ -82,9 +82,9 @@ jobs:
           cache-to: type=gha,mode=max,scope=${{ matrix.service }}
 
   # ------------------------------------------------------------ sonarqube analysis
-  # Runs in parallel with the docker build matrix. Independent of it — analyzes
-  # the Java/Maven codebase and reports to SonarQube, unrelated to the per-service
-  # image builds above.
+  # Runs in parallel with the docker build matrix. This repo has no pom.xml —
+  # every service under services/* is Node.js (package.json + server.js) — so
+  # we use the generic SonarQube scanner instead of the Maven plugin.
   sonar-analysis:
     name: Build and analyze (SonarQube)
     runs-on: ubuntu-latest
@@ -93,31 +93,17 @@ jobs:
         with:
           fetch-depth: 0  # Shallow clones should be disabled for a better relevancy of analysis
 
-      - name: Set up JDK 17
-        uses: actions/setup-java@c1e323688fd81a25caa38c78aa6df2d33d3e20d9 # v4.8.0
-        with:
-          java-version: 17
-          distribution: 'zulu' # Alternative distribution options are available.
-
-      - name: Cache SonarQube packages
-        uses: actions/cache@0057852bfaa89a56745cba8c7296529d2fc39830 # v4.3.0
-        with:
-          path: ~/.sonar/cache
-          key: ${{ runner.os }}-sonar
-          restore-keys: ${{ runner.os }}-sonar
-
-      - name: Cache Maven packages
-        uses: actions/cache@0057852bfaa89a56745cba8c7296529d2fc39830 # v4.3.0
-        with:
-          path: ~/.m2
-          key: ${{ runner.os }}-m2-${{ hashFiles('**/pom.xml') }}
-          restore-keys: ${{ runner.os }}-m2
-
-      - name: Build and analyze
+      - name: SonarQube Scan
+        uses: sonarsource/sonarqube-scan-action@v4
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
           SONAR_HOST_URL: ${{ secrets.SONAR_HOST_URL }}
-        run: mvn -B verify org.sonarsource.scanner.maven:sonar-maven-plugin:sonar -Dsonar.projectKey=singhgauravlinux-coder_bakery-swagger_1c30f684-9261-4e30-a071-9d5a75ed8f8b -Dsonar.projectName='bakery-swagger'
+        with:
+          args: >
+            -Dsonar.projectKey=singhgauravlinux-coder_bakery-swagger_1c30f684-9261-4e30-a071-9d5a75ed8f8b
+            -Dsonar.projectName=bakery-swagger
+            -Dsonar.sources=services
+            -Dsonar.exclusions=**/node_modules/**
 
   # ---------------------------------------- auto-update image names in k8s/
   # After all images are pushed, rewrite the image: line in every service
